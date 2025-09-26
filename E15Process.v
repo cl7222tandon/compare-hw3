@@ -70,7 +70,14 @@ module E15Process(input clk);
    // storeVal is a 4-bit value representing the value that
    // is to be stored in the destination register, for
    // instructions that write to it
-   assign storeVal = 4'bz; // TODO
+   assign storeVal  =
+      (opCode == mov ) ? (
+       (src == Rg0) ? r0 :
+       (src == Rg1) ? r1 :
+       (src == Rg2) ? r2 : r3 ):
+      (opCode == movi) ? immData :
+      ((opCode == add) | (opCode == addi) | (opCode == sub) | (opCode == subi)) ? aluOutput :
+      4'b0000;
 
    // operand1 is a 4-bit value represnting the first operand
    // to be passed into the ALU
