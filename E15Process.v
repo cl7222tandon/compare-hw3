@@ -81,11 +81,24 @@ module E15Process(input clk);
 
    // operand1 is a 4-bit value represnting the first operand
    // to be passed into the ALU
-   assign operand1 = 4'bz; // TODO
+   assign operand1 =
+      (opCode == addi || opCode == subi || opCode == cmpi) ? immData :
+      (opCode == add  || opCode == sub  || opCode == cmp ) ? (
+         (src == Rg0) ? r0 :
+         (src == Rg1) ? r1 :
+         (src == Rg2) ? r2 : r3 ) :
+      4'b0000;
 
    // operand1 is a 4-bit value represnting the second operand
    // to be passed into the ALU
-   assign operand2 = 4'bz; // TODO
+   assign operand2 = 
+      (opCode == add  || opCode == addi ||
+       opCode == sub  || opCode == subi ||
+       opCode == cmp  || opCode == cmpi) ? (
+         (dst == Rg0) ? r0 :
+         (dst == Rg1) ? r1 :
+         (dst == Rg2) ? r2 : r3 ) :
+      4'b0000;
 
    always @(posedge clk)
       begin 
