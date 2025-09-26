@@ -63,8 +63,8 @@ module E15Process(input clk);
    // that is to be added to the program counter
    assign pcIncr =
       (opCode == jmp) ? immData : 
-      ((opCode == jz ) & (zFlag == 1'b1)) ? immData :
-      ((opCode == jnz) & (zFlag == 1'b0)) ? immData :
+      ((opCode == jz ) & zFlag) ? immData :
+      ((opCode == jnz) & ~zFlag) ? immData :
       4'b0001; 
 
    // storeVal is a 4-bit value representing the value that
