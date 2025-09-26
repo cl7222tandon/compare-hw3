@@ -61,7 +61,11 @@ module E15Process(input clk);
 
    // pcIncr is a 4-bit value representing the value
    // that is to be added to the program counter
-   assign pcIncr = 4'bz; // TODO
+   assign pcIncr =
+      (opCode == jmp) ? immData : 
+      ((opCode == jz ) & (zFlag == 1'b1)) ? immData :
+      ((opCode == jnz) & (zFlag == 1'b0)) ? immData :
+      4'b0001; 
 
    // storeVal is a 4-bit value representing the value that
    // is to be stored in the destination register, for
